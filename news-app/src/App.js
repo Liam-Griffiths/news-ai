@@ -9,7 +9,7 @@ function App() {
         .then(response => response.json())
         .then(data => console.log(data));
 
-    const headline = "TEST HEADLINE TRUMP BLAH BREXIT BLAH 2";
+    const headline = "HEADLINE TEST";
 
     return (
         <div className="App">
