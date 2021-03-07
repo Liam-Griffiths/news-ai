@@ -7,9 +7,11 @@ function App() {
 
     fetch('https://api.github.com/users/hacktivist123/repos')
         .then(response => response.json())
-        .then(data => console.log(data));
+        .then(data => {
+            console.log(data)
+        });
 
-    const headline = "HEADLINE TEST";
+    const headline = "TEST HEADLINE";
 
     return (
         <div className="App">
@@ -23,12 +25,12 @@ function App() {
                         </div>
                     </div>
                 </div>
-            <div class="row row1">
-                <h1 class="display-4 title1">{headline}</h1>
+                <div class="row row1">
+                    <h1 class="display-4 title1">{headline}</h1>
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
 }
 
 export default App;
