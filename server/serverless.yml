@@ -1,0 +1,270 @@
+service: deskbooker-server
+
+custom:
+    stage: ${opt:stage, self:provider.stage}
+    userPoolName: deskbooker-user-pool-${self:custom.stage}
+    userPoolClientName: deskbooker-user-pool-client-${self:custom.stage}
+    profile:
+        dev: deskbooker-server
+    apiRoot: api/1
+    webpack:
+        includeModules: true
+    dynamodb:
+        start:
+            migrate: true
+        stages:
+            - dev
+    reqValidatorName: request-validator
+
+provider:
+    name: aws
+    runtime: nodejs10.x
+    stage: dev
+    logRetentionInDays: 14
+    region: eu-west-2
+    iamRoleStatements:
+        - Effect: 'Allow'
+          Action:
+              - 'dynamodb:*'
+              - 's3:*'
+          Resource: '*'
+    apiGateway:
+    binaryMediaTypes:
+        - '*/*'
+    versionFunctions: true
+    environment:
+        PEOPLE_DB: teamx-${self:custom.stage}-people
+
+package:
+    include: # Specify the directories and files which should be included in the deployment package
+        - .build/src/**
+    exclude:
+        - .build
+        - '.*/__tests__/**'
+        - 'src/**'
+        - 'coverage/**'
+        - 'tests/**'
+
+functions:
+    getPeople:
+        handler: src/lambdas/people/getPeople.handler
+        timeout: 10
+        events:
+            - http:
+                  cors: true
+                  private: false
+                  method: get
+                  path: deskbooker/people
+                    # request:
+                    #  schema:
+                    #    application/json:
+                    #     tsPath: src/common/interfaces.ts
+                    #      tsInterface: PeopleResponse
+
+    getPerson:
+        handler: src/lambdas/people/getPerson.handler
+        timeout: 10
+        events:
+            - http:
+                  cors: true
+                  private: false
+                  method: get
+                  path: deskbooker/people/{ID}
+
+    getPersonConnections:
+      handler: src/lambdas/people/getConnections.handler
+      timeout: 10
+      events:
+        - http:
+            cors: true
+            private: false
+            method: get
+            path: deskbooker/people/{ID}/connections
+
+    getSlackPerson:
+      handler: src/lambdas/people/getSlackPerson.handler
+      timeout: 10
+      events:
+        - http:
+            cors: true
+            private: false
+            method: get
+            path: deskbooker/people/slack/{ID}
+
+    postPerson:
+      handler: src/lambdas/people/commitPerson.handler
+      timeout: 10
+      events:
+        - http:
+            cors: true
+            private: false
+            method: post
+            path: deskbooker/people
+
+    getTeam:
+      handler: src/lambdas/offices/getTeam.handler
+      timeout: 30
+      events:
+        - http:
+            cors: true
+            private: false
+            method: get
+            path: deskbooker/offices/{ID}
+
+    getTeams:
+        handler: src/lambdas/offices/getTeams.handler
+        timeout: 30
+        events:
+            - http:
+                  cors: true
+                  private: false
+                  method: get
+                  path: deskbooker/offices
+
+    postTeams:
+      handler: src/lambdas/offices/commitTeam.handler
+      timeout: 10
+      events:
+        - http:
+            cors: true
+            private: false
+            method: post
+            path: deskbooker/offices
+
+resources:
+    Resources:
+        PeopleDynamoDbTable:
+            Type: 'AWS::DynamoDB::Table'
+            DeletionPolicy: Retain
+            Properties:
+                AttributeDefinitions:
+                    - AttributeName: ID
+                      AttributeType: S
+                    - AttributeName: email
+                      AttributeType: S
+                    - AttributeName: name
+                      AttributeType: S
+                    - AttributeName: slackID
+                      AttributeType: S
+                    - AttributeName: created
+                      AttributeType: N
+                KeySchema:
+                    - AttributeName: ID
+                      KeyType: HASH
+                GlobalSecondaryIndexes:
+                    - IndexName: email
+                      KeySchema:
+                          - AttributeName: email
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
+                    - IndexName: slackID
+                      KeySchema:
+                        - AttributeName: slackID
+                          KeyType: HASH
+                      Projection:
+                        ProjectionType: ALL
+                      ProvisionedThroughput:
+                        ReadCapacityUnits: 1
+                        WriteCapacityUnits: 1
+                    - IndexName: name-created
+                      KeySchema:
+                          - AttributeName: name
+                            KeyType: HASH
+                          - AttributeName: created
+                            KeyType: RANGE
+                      Projection:
+                          ProjectionType: ALL
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
+                TableName: teamx-${self:custom.stage}-people
+        TeamDynamoDbTable:
+            Type: 'AWS::DynamoDB::Table'
+            DeletionPolicy: Retain
+            Properties:
+                AttributeDefinitions:
+                    - AttributeName: ID
+                      AttributeType: S
+                    - AttributeName: name
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: ID
+                      KeyType: HASH
+                GlobalSecondaryIndexes:
+                    - IndexName: name
+                      KeySchema:
+                          - AttributeName: name
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
+                TableName: teamx-${self:custom.stage}-team
+        CustomRequestValidator:
+            Type: 'AWS::ApiGateway::RequestValidator'
+            Properties:
+                # Name: 'cust-req-validator'
+                Name: ${self:custom.reqValidatorName}
+                RestApiId:
+                    Ref: ApiGatewayRestApi
+                ValidateRequestBody: true
+                ValidateRequestParameters: true
+        CognitoUserPool:
+          Type: "AWS::Cognito::UserPool"
+          Properties:
+            MfaConfiguration: OFF
+            UserPoolName: ${self:custom.userPoolName}
+            UsernameAttributes:
+              - email
+            Policies:
+              PasswordPolicy:
+                MinimumLength: 6
+                RequireLowercase: False
+                RequireNumbers: True
+                RequireSymbols: False
+                RequireUppercase: True
+        CognitoUserPoolClient:
+          Type: "AWS::Cognito::UserPoolClient"
+          Properties:
+            ClientName: ${self:custom.userPoolClientName}
+            GenerateSecret: False
+            UserPoolId:
+              Ref: CognitoUserPool
+        ApiGatewayAuthorizer:
+          DependsOn:
+            - ApiGatewayRestApi
+          Type: AWS::ApiGateway::Authorizer
+          Properties:
+            Name: cognito-authorizer
+            IdentitySource: method.request.header.Authorization
+            RestApiId:
+              Ref: ApiGatewayRestApi
+            Type: COGNITO_USER_POOLS
+            ProviderARNs:
+              - Fn::GetAtt: [CognitoUserPool, Arn]
+    Outputs:
+      CognitoUserPoolArn:
+        Value:
+          Fn::GetAtt:
+            - CognitoUserPool
+            - Arn
+        Export:
+          Name: CognitoUserPoolArn-${self:custom.stage}
+
+plugins:
+    - serverless-plugin-ts-validation
+    - serverless-webpack
+    - serverless-reqvalidator-plugin
+    - serverless-dynamodb-local
+    - serverless-offline
