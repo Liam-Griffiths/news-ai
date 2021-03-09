@@ -1,3 +1,5 @@
+org: rockinliam
+app: news-ai
 service: news-server
 
 custom:
@@ -13,6 +15,7 @@ custom:
         stages:
             - dev
     reqValidatorName: request-validator
+    bucket: headlines-bucket
 
 provider:
     name: aws
@@ -73,7 +76,10 @@ resources:
                     Ref: ApiGatewayRestApi
                 ValidateRequestBody: true
                 ValidateRequestParameters: true
-
+        S3HeadlinesBucket:
+            Type: 'AWS::S3::Bucket'
+            Properties:
+                BucketName: ${self:custom.bucket}
 
 plugins:
     - serverless-plugin-ts-validation
