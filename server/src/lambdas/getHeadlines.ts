@@ -1,9 +1,6 @@
 import {APIGatewayEvent, APIGatewayProxyResult, Handler} from 'aws-lambda';
 import AWS, {S3} from 'aws-sdk'
-import {responses} from "../../common/responses";
-import { Team, Person, MinPerson, TeamsResponse } from '../../common/interfaces';
-import {getAllPeople, getAllTeams, getPerson} from "../../common/data";
-import {S3Parameters} from "aws-sdk/clients/quicksight";
+import { responses } from "../common/responses";
 
 export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult>  => {
     console.log("Incoming event:");
@@ -16,17 +13,17 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     };
 
     const data = await s3.getObject(options).promise();
+
+    if(!data || !data.Body){
+        const res: APIGatewayProxyResult = responses.notFound;
+        return res;
+    }
+
     const fileContents = data.Body.toString();
     const json = JSON.parse(fileContents);
     console.log(json);
 
-    if(data){
-        const res: APIGatewayProxyResult = responses.ok;
-        res.body = json;
-        return res;
-    }
-
     const res: APIGatewayProxyResult = responses.ok;
-    res.body = "Nothing found."
+    res.body = fileContents;
     return res;
 };

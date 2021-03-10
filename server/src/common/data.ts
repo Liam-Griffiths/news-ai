@@ -1,5 +1,3 @@
-import {Person, Team} from "./interfaces";
-import {MapObj} from "./config";
 import {
     getConfig,
     loadAllGeneric,
@@ -8,6 +6,7 @@ import {
     loadFieldGeneric,
     commitGeneric
 } from "./platform";
+import {MapObj} from "./interfaces";
 
 /*
 export const getAllPeople = async (env?: string): Promise<Person[]> => {

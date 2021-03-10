@@ -1,7 +1,7 @@
 import Dynamo from "aws-sdk/clients/dynamodb";
 import {AWSError} from "aws-sdk";
-import {Key} from './interfaces';
-import {devConfig, MapObj, prodConfig} from "./config";
+import {Key, MapObj} from './interfaces';
+import {devConfig, prodConfig} from "./config";
 
 const currentEnv:string = "liam";
 const devEnv: string = "dev";

@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "deploy": "sls deploy --alias dev",
+        "deploy": "serverless deploy --stage develop",
         "lint": "npx tslint -c tslint.json 'src/**/*.ts'",
         "test": "jest"
     },

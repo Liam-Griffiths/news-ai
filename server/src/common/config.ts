@@ -1,6 +1,4 @@
-export interface MapObj {
-    [key: string]: string;
-}
+import {MapObj} from "./interfaces";
 
 export const devConfig: MapObj = {
     peopleTable: "teamx-dev-people",

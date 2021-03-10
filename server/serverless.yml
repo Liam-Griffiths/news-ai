@@ -57,7 +57,7 @@ functions:
 
     buildHeadlines:
         handler: src/lambdas/buildHeadlines.handler
-        timeout: 2500
+        timeout: 900
         events:
             - http:
                   cors: true

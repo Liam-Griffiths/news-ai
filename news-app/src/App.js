@@ -5,13 +5,29 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
 
-    fetch('https://api.github.com/users/hacktivist123/repos')
+    let headlines = {
+        lead: {
+            text:"",
+            link: ""
+        },
+        breaking: {
+            text:"",
+            link: ""
+        },
+        headlines: [{
+            text:"",
+            link: ""
+        }]
+    };
+
+    fetch('https://w52orr4jkl.execute-api.eu-west-2.amazonaws.com/develop/headlines')
         .then(response => response.json())
         .then(data => {
+            headlines = data;
             console.log(data)
         });
 
-    const headline = "TEST HEADLINE";
+    const headline = headlines.lead.text;
 
     return (
         <div className="App">
