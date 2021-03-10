@@ -1,33 +1,24 @@
-import React from "react";
+import React,{useState} from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import { Button } from "react-bootstrap";
 
 function App() {
 
-    let headlines = {
-        lead: {
-            text:"",
-            link: ""
+    const [data,setData]=useState({
+        news:{
+            lead:{
+                text:"...",
+                link:"..."
+            }
         },
-        breaking: {
-            text:"",
-            link: ""
-        },
-        headlines: [{
-            text:"",
-            link: ""
-        }]
-    };
+    });
 
     fetch('https://w52orr4jkl.execute-api.eu-west-2.amazonaws.com/develop/headlines')
         .then(response => response.json())
         .then(data => {
-            headlines = data;
-            console.log(data)
+            setData({ news: data })
         });
-
-    const headline = headlines.lead.text;
 
     return (
         <div className="App">
@@ -42,7 +33,11 @@ function App() {
                     </div>
                 </div>
                 <div class="row row1">
-                    <h1 class="display-4 title1">{headline}</h1>
+                    <h1 class="display-4 title1">
+                        <a href={data.news.lead.link} target="_blank" rel="noreferrer">
+                            {data.news.lead.text}
+                        </a>
+                    </h1>
                 </div>
             </div>
         </div>
