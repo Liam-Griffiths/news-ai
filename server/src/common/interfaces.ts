@@ -20,11 +20,11 @@ export interface Headline {
 export interface NewsAPIResponse {
     status:       string;
     totalResults: number;
-    articles:     Article[];
+    articles:     NewsAPIArticle[];
 }
 
-export interface Article {
-    source:      Source;
+export interface NewsAPIArticle {
+    source:      NewsAPISource;
     author:      null | string;
     title:       string;
     description: string;
@@ -34,7 +34,26 @@ export interface Article {
     content:     string;
 }
 
-export interface Source {
+export interface NewsAPISource {
     id:   null | string;
     name: string;
+}
+
+export interface SourceList {
+    mainstream: SourceItem[];
+    breaking: SourceItem[];
+}
+export interface SourceItem{
+    title: string;
+    url: string;
+}
+
+export interface RawHeadline {
+    headline: string;
+    url: string;
+    topics: string[];
+}
+
+export interface TopicArray {
+    [Key: string]: string[];
 }

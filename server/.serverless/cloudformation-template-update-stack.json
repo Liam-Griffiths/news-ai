@@ -214,7 +214,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/news-server/develop/1615333076195-2021-03-09T23:37:56.195Z/news-server.zip"
+          "S3Key": "serverless/news-server/develop/1615430523934-2021-03-11T02:42:03.934Z/news-server.zip"
         },
         "FunctionName": "news-server-develop-getHeadlines",
         "Handler": "s_getHeadlines.handler",
@@ -232,14 +232,14 @@
         "GetHeadlinesLogGroup"
       ]
     },
-    "GetHeadlinesLambdaVersiondTwtIRyssNwRpySiw8dyBHIHRTXsUe8nNMfPzhiwA": {
+    "GetHeadlinesLambdaVersionoJqsk7iemigYe9DRRavgbxBl07TqxqRMdFl4kYs0Y": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetHeadlinesLambdaFunction"
         },
-        "CodeSha256": "5wODvzH726BQ+oLCFlCN4taC9J+1Xiq4BwWj6bFnUvk="
+        "CodeSha256": "F+MfCKeNcTpUEHz489PsobtkWMQkDaYbDCmnm3ldTn8="
       }
     },
     "BuildHeadlinesLambdaFunction": {
@@ -249,7 +249,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/news-server/develop/1615333076195-2021-03-09T23:37:56.195Z/news-server.zip"
+          "S3Key": "serverless/news-server/develop/1615430523934-2021-03-11T02:42:03.934Z/news-server.zip"
         },
         "FunctionName": "news-server-develop-buildHeadlines",
         "Handler": "s_buildHeadlines.handler",
@@ -267,14 +267,14 @@
         "BuildHeadlinesLogGroup"
       ]
     },
-    "BuildHeadlinesLambdaVersiont4SXaVn3Jy7rwo4KNykugs7q8K1YV3PQHTuOGgZEI": {
+    "BuildHeadlinesLambdaVersion5Ki6I8PmaaUnyaO8HMWU769KczarAZQC0wyZ6yjPV0I": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "BuildHeadlinesLambdaFunction"
         },
-        "CodeSha256": "5wODvzH726BQ+oLCFlCN4taC9J+1Xiq4BwWj6bFnUvk="
+        "CodeSha256": "F+MfCKeNcTpUEHz489PsobtkWMQkDaYbDCmnm3ldTn8="
       }
     },
     "ApiGatewayRestApi": {
@@ -495,7 +495,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1615333055814": {
+    "ApiGatewayDeployment1615430485367": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -694,7 +694,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/news-server/develop/1615333076195-2021-03-09T23:37:56.195Z/custom-resources.zip"
+          "S3Key": "serverless/news-server/develop/1615430523934-2021-03-11T02:42:03.934Z/custom-resources.zip"
         },
         "FunctionName": "news-server-develop-custom-resource-apigw-cw-role",
         "Handler": "apiGatewayCloudWatchRole/handler.handler",
@@ -777,13 +777,13 @@
     "GetHeadlinesLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetHeadlinesLambdaVersiondTwtIRyssNwRpySiw8dyBHIHRTXsUe8nNMfPzhiwA"
+        "Ref": "GetHeadlinesLambdaVersionoJqsk7iemigYe9DRRavgbxBl07TqxqRMdFl4kYs0Y"
       }
     },
     "BuildHeadlinesLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "BuildHeadlinesLambdaVersiont4SXaVn3Jy7rwo4KNykugs7q8K1YV3PQHTuOGgZEI"
+        "Ref": "BuildHeadlinesLambdaVersion5Ki6I8PmaaUnyaO8HMWU769KczarAZQC0wyZ6yjPV0I"
       }
     },
     "ServiceEndpoint": {

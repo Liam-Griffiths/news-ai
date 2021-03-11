@@ -1,5 +1,5 @@
 import {NewsAPIResponse} from "./interfaces";
-
+/*
 export const NewsApi = async (): Promise<NewsAPIResponse>  => {
     const res = await axios.get('/', { data })
 
@@ -7,3 +7,4 @@ export const NewsApi = async (): Promise<NewsAPIResponse>  => {
 
     return res;
 };
+*/
