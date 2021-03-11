@@ -64,6 +64,8 @@ functions:
                   private: false
                   method: get
                   path: build
+            - schedule:
+                  rate: rate(10 minutes)
 
 resources:
     Resources:

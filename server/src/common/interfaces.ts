@@ -8,8 +8,8 @@ export interface MapObj {
 
 export interface Headlines {
     lead: Headline;
-    breaking: Headline;
-    headlines: Headline[];
+    breaking?: Headline;
+    headlines?: Headline[];
 };
 
 export interface Headline {
@@ -54,6 +54,8 @@ export interface RawHeadline {
     topics: string[];
 }
 
-export interface TopicArray {
-    [Key: string]: string[];
+export interface TopicHeadline {
+    topic: string;
+    headlines: string[];
+    url: string;
 }
