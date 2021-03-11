@@ -84,19 +84,6 @@ resources:
             Type: 'AWS::S3::Bucket'
             Properties:
                 BucketName: ${self:custom.bucket}
-        HeadlinesPublicReadPolicy:
-            Type: AWS::S3::BucketPolicy
-            Properties:
-                Bucket: ${self:custom.bucket}
-                PolicyDocument:
-                    Version: "2012-10-17"
-                    Statement:
-                        - Effect: Allow
-                          Action:
-                              - "s3:GetObject"
-                          Resource:
-                              - !Join ['/', [!Ref S3HeadlinesBucket, 'public']]
-                          Principal: "*"
 
 plugins:
     - serverless-plugin-ts-validation

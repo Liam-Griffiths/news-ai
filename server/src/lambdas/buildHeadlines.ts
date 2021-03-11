@@ -44,6 +44,8 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     topicsHeadlines = topicsHeadlines.sort(sortObjByArrayProp("headlines"));
     topicsHeadlines = topicsHeadlines.reverse();
 
+    console.log(JSON.stringify(topicsHeadlines));
+
     const generator = new TextGenerator(topicsHeadlines[0].headlines);
     const result = await generator.generateSentence();
 
