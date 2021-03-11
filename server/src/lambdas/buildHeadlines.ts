@@ -8,15 +8,12 @@ import nlp from 'compromise'
 import AWS, {S3} from "aws-sdk";
 
 export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult>  => {
-    console.log("Incoming event:");
-    console.log(JSON.stringify(event));
 
     let parser: Parser = new Parser();
     let headlines: RawHeadline[] = [];
 
     for(let source of sources.mainstream){
         let feed: Output<any> = await parser.parseURL(source.url);
-        console.log(feed.title);
 
         feed.items.forEach(item => {
             const newHeadline: RawHeadline = {headline: item.title, url: item.link, topics:[]};
@@ -47,11 +44,8 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     topicsHeadlines = topicsHeadlines.sort(sortObjByArrayProp("headlines"));
     topicsHeadlines = topicsHeadlines.reverse();
 
-    console.log(`List: ${JSON.stringify(topicsHeadlines)}`);
-
     const generator = new TextGenerator(topicsHeadlines[0].headlines);
     const result = await generator.generateSentence();
-    console.log(result);
 
     const finalHeadlines: Headlines = {
         lead: {
@@ -69,7 +63,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
         ContentType: "application/json"
     };
 
-    const data = await s3.putObject(options).promise();
+    await s3.putObject(options).promise();
 
     const res: APIGatewayProxyResult = responses.ok;
     res.body = JSON.stringify(finalHeadlines);

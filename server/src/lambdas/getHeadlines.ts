@@ -3,8 +3,6 @@ import AWS, {S3} from 'aws-sdk'
 import { responses } from "../common/responses";
 
 export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatewayProxyResult>  => {
-    console.log("Incoming event:");
-    console.log(JSON.stringify(event));
     const s3: S3 = new AWS.S3();
 
     const options = {
@@ -21,7 +19,6 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
 
     const fileContents = data.Body.toString();
     const json = JSON.parse(fileContents);
-    console.log(json);
 
     const res: APIGatewayProxyResult = responses.ok;
     res.body = fileContents;

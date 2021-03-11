@@ -21,7 +21,7 @@ provider:
     name: aws
     runtime: nodejs10.x
     stage: dev
-    logRetentionInDays: 14
+    logRetentionInDays: 1
     region: eu-west-2
     iamRoleStatements:
         - Effect: 'Allow'
@@ -54,6 +54,7 @@ functions:
                   private: false
                   method: get
                   path: headlines
+        provisionedConcurrency: 5
 
     buildHeadlines:
         handler: src/lambdas/buildHeadlines.handler
@@ -65,7 +66,8 @@ functions:
                   method: get
                   path: build
             - schedule:
-                  rate: rate(10 minutes)
+                  rate: rate(30 minutes)
+        provisionedConcurrency: 2
 
 resources:
     Resources:

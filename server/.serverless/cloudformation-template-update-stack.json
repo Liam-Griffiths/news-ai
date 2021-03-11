@@ -60,14 +60,14 @@
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/news-server-develop-getHeadlines",
-        "RetentionInDays": 14
+        "RetentionInDays": 1
       }
     },
     "BuildHeadlinesLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/news-server-develop-buildHeadlines",
-        "RetentionInDays": 14
+        "RetentionInDays": 1
       }
     },
     "IamRoleLambdaExecution": {
@@ -214,7 +214,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/news-server/develop/1615469373489-2021-03-11T13:29:33.489Z/news-server.zip"
+          "S3Key": "serverless/news-server/develop/1615473716891-2021-03-11T14:41:56.891Z/news-server.zip"
         },
         "FunctionName": "news-server-develop-getHeadlines",
         "Handler": "s_getHeadlines.handler",
@@ -232,15 +232,34 @@
         "GetHeadlinesLogGroup"
       ]
     },
-    "GetHeadlinesLambdaVersionaWTmoj3BgU7R6EFGJRoSOOd56XIb0f0Y4ZuQ5MA8mg": {
+    "GetHeadlinesLambdaVersionvKrKDNazK13A2i2HNGdymkwWWovfLZNclUVVJjL88": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetHeadlinesLambdaFunction"
         },
-        "CodeSha256": "p3J2MIkzb/XgmMzsuiumhWFJR8x/NaPdZZuyW0TqFDw="
+        "CodeSha256": "ieRZpF/Iw/5/VK1acVTGNH+0F6NvZv1QZjNmUPriIYo="
       }
+    },
+    "GetHeadlinesProvConcLambdaAlias": {
+      "Type": "AWS::Lambda::Alias",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "GetHeadlinesLambdaFunction"
+        },
+        "FunctionVersion": {
+          "Fn::GetAtt": [
+            "GetHeadlinesLambdaVersionvKrKDNazK13A2i2HNGdymkwWWovfLZNclUVVJjL88",
+            "Version"
+          ]
+        },
+        "Name": "provisioned",
+        "ProvisionedConcurrencyConfig": {
+          "ProvisionedConcurrentExecutions": 5
+        }
+      },
+      "DependsOn": "GetHeadlinesLambdaFunction"
     },
     "BuildHeadlinesLambdaFunction": {
       "Type": "AWS::Lambda::Function",
@@ -249,7 +268,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/news-server/develop/1615469373489-2021-03-11T13:29:33.489Z/news-server.zip"
+          "S3Key": "serverless/news-server/develop/1615473716891-2021-03-11T14:41:56.891Z/news-server.zip"
         },
         "FunctionName": "news-server-develop-buildHeadlines",
         "Handler": "s_buildHeadlines.handler",
@@ -267,20 +286,39 @@
         "BuildHeadlinesLogGroup"
       ]
     },
-    "BuildHeadlinesLambdaVersionmBKHoANcR5jphp0ebQ9yGyMEXHxVSPohVFf3J1zqbw": {
+    "BuildHeadlinesLambdaVersion0Ali86ezYPqLbpMgNlZWgc4msO37ihMFBYNDpJf80w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "BuildHeadlinesLambdaFunction"
         },
-        "CodeSha256": "p3J2MIkzb/XgmMzsuiumhWFJR8x/NaPdZZuyW0TqFDw="
+        "CodeSha256": "ieRZpF/Iw/5/VK1acVTGNH+0F6NvZv1QZjNmUPriIYo="
       }
+    },
+    "BuildHeadlinesProvConcLambdaAlias": {
+      "Type": "AWS::Lambda::Alias",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "BuildHeadlinesLambdaFunction"
+        },
+        "FunctionVersion": {
+          "Fn::GetAtt": [
+            "BuildHeadlinesLambdaVersion0Ali86ezYPqLbpMgNlZWgc4msO37ihMFBYNDpJf80w",
+            "Version"
+          ]
+        },
+        "Name": "provisioned",
+        "ProvisionedConcurrencyConfig": {
+          "ProvisionedConcurrentExecutions": 2
+        }
+      },
+      "DependsOn": "BuildHeadlinesLambdaFunction"
     },
     "BuildHeadlinesEventsRuleSchedule1": {
       "Type": "AWS::Events::Rule",
       "Properties": {
-        "ScheduleExpression": "rate(10 minutes)",
+        "ScheduleExpression": "rate(30 minutes)",
         "State": "ENABLED",
         "Targets": [
           {
@@ -481,6 +519,8 @@
                     "Arn"
                   ]
                 },
+                ":",
+                "provisioned",
                 "/invocations"
               ]
             ]
@@ -524,6 +564,8 @@
                     "Arn"
                   ]
                 },
+                ":",
+                "provisioned",
                 "/invocations"
               ]
             ]
@@ -532,7 +574,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1615469329032": {
+    "ApiGatewayDeployment1615473654030": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -551,9 +593,17 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "GetHeadlinesLambdaFunction",
-            "Arn"
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Fn::GetAtt": [
+                  "GetHeadlinesLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "provisioned"
+            ]
           ]
         },
         "Action": "lambda:InvokeFunction",
@@ -582,15 +632,24 @@
             ]
           ]
         }
-      }
+      },
+      "DependsOn": "GetHeadlinesProvConcLambdaAlias"
     },
     "BuildHeadlinesLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "BuildHeadlinesLambdaFunction",
-            "Arn"
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Fn::GetAtt": [
+                  "BuildHeadlinesLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "provisioned"
+            ]
           ]
         },
         "Action": "lambda:InvokeFunction",
@@ -619,13 +678,14 @@
             ]
           ]
         }
-      }
+      },
+      "DependsOn": "BuildHeadlinesProvConcLambdaAlias"
     },
     "ApiGatewayLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/api-gateway/news-server-develop",
-        "RetentionInDays": 14
+        "RetentionInDays": 1
       }
     },
     "CustomApiGatewayAccountCloudWatchRole": {
@@ -731,7 +791,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/news-server/develop/1615469373489-2021-03-11T13:29:33.489Z/custom-resources.zip"
+          "S3Key": "serverless/news-server/develop/1615473716891-2021-03-11T14:41:56.891Z/custom-resources.zip"
         },
         "FunctionName": "news-server-develop-custom-resource-apigw-cw-role",
         "Handler": "apiGatewayCloudWatchRole/handler.handler",
@@ -814,13 +874,13 @@
     "GetHeadlinesLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetHeadlinesLambdaVersionaWTmoj3BgU7R6EFGJRoSOOd56XIb0f0Y4ZuQ5MA8mg"
+        "Ref": "GetHeadlinesLambdaVersionvKrKDNazK13A2i2HNGdymkwWWovfLZNclUVVJjL88"
       }
     },
     "BuildHeadlinesLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "BuildHeadlinesLambdaVersionmBKHoANcR5jphp0ebQ9yGyMEXHxVSPohVFf3J1zqbw"
+        "Ref": "BuildHeadlinesLambdaVersion0Ali86ezYPqLbpMgNlZWgc4msO37ihMFBYNDpJf80w"
       }
     },
     "ServiceEndpoint": {

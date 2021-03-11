@@ -1,24 +1,15 @@
-import React,{useState} from "react";
+import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import { Button } from "react-bootstrap";
+import Async from 'react-async';
+
+const loadHeadlines = () =>
+    fetch("https://w52orr4jkl.execute-api.eu-west-2.amazonaws.com/develop/headlines")
+        .then(res => (res.ok ? res : Promise.reject(res)))
+        .then(res => res.json())
 
 function App() {
-
-    const [data,setData]=useState({
-        news:{
-            lead:{
-                text:"...",
-                link:"..."
-            }
-        },
-    });
-
-    fetch('https://w52orr4jkl.execute-api.eu-west-2.amazonaws.com/develop/headlines')
-        .then(response => response.json())
-        .then(data => {
-            setData({ news: data })
-        });
 
     return (
         <div className="App">
@@ -34,9 +25,22 @@ function App() {
                 </div>
                 <div class="row row1">
                     <h1 class="display-4 title1">
-                        <a href={data.news.lead.link} target="_blank" rel="noreferrer">
-                            {data.news.lead.text}
+                    <Async promiseFn={loadHeadlines}>
+                    <Async.Loading>Loading...</Async.Loading>
+                <Async.Fulfilled>
+                {data => {
+
+                    return (
+                        <a href={data.lead.link} target="_blank" rel="noreferrer">
+                            {data.lead.text}
                         </a>
+    )
+    }}
+</Async.Fulfilled>
+    <Async.Rejected>
+    {error => `Something went wrong: ${error.message}`}
+</Async.Rejected>
+    </Async>
                     </h1>
                 </div>
             </div>
