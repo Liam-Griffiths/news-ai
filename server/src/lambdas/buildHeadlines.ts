@@ -3,7 +3,7 @@ import {responses} from "../common/responses";
 import Parser, {Output} from 'rss-parser';
 import {TextGenerator} from 'node-markov-generator';
 import {sources} from "../common/config";
-import {Headlines, RawHeadline, TopicHeadline} from "../common/interfaces";
+import {Headlines, MapObj, RawHeadline, TopicHeadline} from "../common/interfaces";
 import nlp from 'compromise'
 import AWS, {S3} from "aws-sdk";
 
@@ -13,18 +13,30 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     let headlines: RawHeadline[] = [];
 
     for(let source of sources.mainstream){
-        let feed: Output<any> = await parser.parseURL(source.url);
+        try {
+            let feed: Output<any> = await parser.parseURL(source.url);
 
-        feed.items.forEach(item => {
-            const newHeadline: RawHeadline = {headline: item.title, url: item.link, topics:[]};
+            feed.items.forEach(item => {
+                const newHeadline: RawHeadline = {headline: item.title, url: item.link, topics: []};
 
-            let doc: any = nlp(item.title);
-            let topics: any = doc.topics().json();
-            topics.forEach((topic: { text: string; }) => {
-                newHeadline.topics.push(topic.text);
+                let doc: any = nlp(item.title);
+                let topics: any = doc.topics().json();
+                let topicList: string[] = [];
+                topics.forEach((topic: { text: string; }) => {
+                    if (topics.length > 1) {
+                        topicList.push(topic.text);
+                    }
+                });
+                if (topicList.length) {
+                    //topicList.sort();
+                    //newHeadline.topics.push(topicList.join(""));
+                    newHeadline.topics.push(topicList[0]+topicList[1]);
+                    headlines.push(newHeadline);
+                }
             });
-            headlines.push(newHeadline);
-        });
+        }catch{
+            console.log(source.title + " broken");
+        }
     }
 
     headlines = shuffle(headlines);
@@ -41,10 +53,11 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
         })
     });
 
-    topicsHeadlines = topicsHeadlines.sort(sortObjByArrayProp("headlines"));
-    topicsHeadlines = topicsHeadlines.reverse();
-
-    console.log(JSON.stringify(topicsHeadlines));
+    topicsHeadlines.sort(sortObjByArrayProp("headlines"));
+    topicsHeadlines = topicsHeadlines.filter(function( obj ) {
+        return obj.headlines.length !== 1;
+    });
+    topicsHeadlines.reverse();
 
     const generator = new TextGenerator(topicsHeadlines[0].headlines);
     const result = await generator.generateSentence();
@@ -53,8 +66,25 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
         lead: {
           text: result,
           link: topicsHeadlines[0].url
-        }
+        },
+        headlines: []
     }
+
+    let i: number = 0;
+    for(let lineObj of topicsHeadlines){
+        if(i > 0 && i < 20) {
+            const generator1 = new TextGenerator(lineObj.headlines);
+            const result1 = await generator1.generateSentence();
+            if (!finalHeadlines.headlines) finalHeadlines.headlines = [];
+            if(result1) {
+                finalHeadlines.headlines.push({
+                    text: result1,
+                    link: lineObj.url
+                });
+            }
+        }
+        i += 1;
+    };
 
     const s3: S3 = new AWS.S3();
 
@@ -66,6 +96,15 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     };
 
     await s3.putObject(options).promise();
+
+    const options2 = {
+        Bucket: 'headlines-bucket',
+        Key: 'raw.json',
+        Body: JSON.stringify(topicsHeadlines),
+        ContentType: "application/json"
+    };
+
+    await s3.putObject(options2).promise();
 
     const res: APIGatewayProxyResult = responses.ok;
     res.body = JSON.stringify(finalHeadlines);

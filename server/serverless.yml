@@ -85,6 +85,7 @@ resources:
             Properties:
                 BucketName: ${self:custom.bucket}
 
+
 plugins:
     - serverless-plugin-ts-validation
     - serverless-webpack

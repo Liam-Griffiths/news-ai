@@ -31,10 +31,23 @@ function App() {
                 {data => {
 
                     return (
+                        <>
                         <a href={data.lead.link} target="_blank" rel="noreferrer">
                             {data.lead.text}
                         </a>
-    )
+            <div class="row row2">
+            <ul class="list-group list-group-flush text-center">
+        {data.headlines.map(hl=> (
+            <li class="list-group-item">                        <a href={hl.link} target="_blank" rel="noreferrer">
+            {hl.text}
+            </a></li>
+        ))}
+    </ul>
+        </div>
+</>
+
+                    )
+
     }}
 </Async.Fulfilled>
     <Async.Rejected>
@@ -43,6 +56,11 @@ function App() {
     </Async>
                     </h1>
                 </div>
+    <div class="row">
+        <div class="text-center small-text">
+        <p>AI Generated Headlines - Liam Griffiths</p>
+        </div>
+    </div>
             </div>
         </div>
     );

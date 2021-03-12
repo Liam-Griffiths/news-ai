@@ -1,0 +1,12 @@
+{
+  "name": "news-server",
+  "version": "1.0.0",
+  "description": "Packaged externals for news-server",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "rss-parser": "^3.12.0",
+    "node-markov-generator": "^0.4.3",
+    "compromise": "^13.10.1"
+  }
+}

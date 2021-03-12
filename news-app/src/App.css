@@ -1,4 +1,4 @@
-body { font-size: 140%; }
+body { font-size: 110%; }
 a:visited { color: #a3bcd1; }
 
 .sup {
@@ -24,6 +24,23 @@ a:visited { color: #a3bcd1; }
 
 .row1{
     text-align:center; padding:2em;
+}
+
+.row2{
+    text-align:center; padding-top:3em; font-size:40%;
+}
+
+.small-text{
+    width: 60%;
+    margin: 0 auto;
+}
+
+.row2 ul{
+    text-align:center; width:80%;  margin:0 auto; text-transform: uppercase;
+}
+
+.row2 li{
+    padding:1em;
 }
 
 .title1{
