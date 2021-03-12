@@ -22,4 +22,4 @@
 	5. Unit testing and deployment infrastructure for the Serverless project. 
 	6. Incorporate passive social media trends to determine breaking stories.
 
-- Ultimate Goal: **Is to have an entirely AI driven new aggregator that can surface breaking news faster and better than any human aggregated news source.**
+- Ultimate Goal: **Is to have an entirely AI driven news aggregator that can surface breaking news faster and better than any human aggregated news source.**
