@@ -1,4 +1,4 @@
-#News Aggregator
+# News Aggregator
 
 > Current Demo: https://liam-news-ai.netlify.app/
 
