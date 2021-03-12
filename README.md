@@ -4,7 +4,7 @@
 
 #### Project Intentions -
 
-- Vision: **To create a news platform that reads the news and automatically aggregates the top and breaking stories and generates unique headlines.** Drudge Report is a long standing news aggregation website, that is still currently hand curated and edited by a Human. In the age of machine learning and cheap cloud computing, a solution could be created that finds, aggregates and breaks stories faster than any human.
+- Vision: **To create a news platform that reads the news and automatically aggregates the top breaking stories and generates unique headlines.** Drudge Report is a long standing news aggregation website, that is still currently hand curated and edited by a Human. In the age of machine learning and cheap cloud computing, a solution could be created that finds, aggregates and breaks stories faster than any human.
 
 - Current Build: Server is a Serverless Framework project being deployed to AWS. The current rough prototype injests a number of mainstream news RSS feeds, extracts headlines, then uses an NLP library to extract “topics” from the headlines. These headlines are then sorted by topic, then fed into a markov chain library to create“new" headlines. These are then place into a JSON file in s3 ready to be served to the UI. The UI is a simple react app, continously deployed to netlify.
 
