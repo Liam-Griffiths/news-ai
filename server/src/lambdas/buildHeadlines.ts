@@ -24,13 +24,20 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
                 let topicList: string[] = [];
                 topics.forEach((topic: { text: string; }) => {
                     if (topics.length > 1) {
-                        topicList.push(topic.text);
+                        let t: string = topic.text;
+                        t = t.toLowerCase();
+                        t = t.replace("'s", "");
+                        t = t.replace(/\W/g, "");
+                        topicList.push(t);
                     }
                 });
                 if (topicList.length) {
-                    //topicList.sort();
+                    topicList.sort();
                     //newHeadline.topics.push(topicList.join(""));
-                    newHeadline.topics.push(topicList[0]+topicList[1]);
+                    //newHeadline.topics.push(topicList[0]+topicList[1]);
+                    topicList.forEach((t) => {
+                        newHeadline.topics.push(t);
+                    })
                     headlines.push(newHeadline);
                 }
             });
@@ -72,7 +79,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
 
     let i: number = 0;
     for(let lineObj of topicsHeadlines){
-        if(i > 0 && i < 20) {
+        if(i > 0 && i < 30) {
             const generator1 = new TextGenerator(lineObj.headlines);
             const result1 = await generator1.generateSentence();
             if (!finalHeadlines.headlines) finalHeadlines.headlines = [];

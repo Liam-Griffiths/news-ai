@@ -238,7 +238,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/news-server/develop/1615508398883-2021-03-12T00:19:58.883Z/news-server.zip"
+                "S3Key": "serverless/news-server/develop/1615544679508-2021-03-12T10:24:39.508Z/news-server.zip"
               },
               "FunctionName": "news-server-develop-getHeadlines",
               "Handler": "s_getHeadlines.handler",
@@ -256,14 +256,14 @@
               "GetHeadlinesLogGroup"
             ]
           },
-          "GetHeadlinesLambdaVersions6M0tXZp8LIPIKumYwoF7VKd4EnPi3iVlVURkBU": {
+          "GetHeadlinesLambdaVersionsCs5uFaEwcsXZf1EkeVBkaEUE40ax50XWydkuOWJ9w": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetHeadlinesLambdaFunction"
               },
-              "CodeSha256": "ElHa6Ns4/tWno9aXJauc8WAcJvy4g8+v7QEiEh11dvo="
+              "CodeSha256": "W/FajUPK5k9dSVerm689Ici1A2Sw2Tlx74iiunSMBVM="
             }
           },
           "GetHeadlinesProvConcLambdaAlias": {
@@ -274,7 +274,7 @@
               },
               "FunctionVersion": {
                 "Fn::GetAtt": [
-                  "GetHeadlinesLambdaVersions6M0tXZp8LIPIKumYwoF7VKd4EnPi3iVlVURkBU",
+                  "GetHeadlinesLambdaVersionsCs5uFaEwcsXZf1EkeVBkaEUE40ax50XWydkuOWJ9w",
                   "Version"
                 ]
               },
@@ -292,7 +292,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/news-server/develop/1615508398883-2021-03-12T00:19:58.883Z/news-server.zip"
+                "S3Key": "serverless/news-server/develop/1615544679508-2021-03-12T10:24:39.508Z/news-server.zip"
               },
               "FunctionName": "news-server-develop-buildHeadlines",
               "Handler": "s_buildHeadlines.handler",
@@ -310,14 +310,14 @@
               "BuildHeadlinesLogGroup"
             ]
           },
-          "BuildHeadlinesLambdaVersionop1oRsPBpgnFf4UFuBp6cflT0uthdeaCvJ7QglXMA": {
+          "BuildHeadlinesLambdaVersionAhJ0q3rUuoe62EhOLHM5WkQp3VWTtosRCUihdYVza5M": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "BuildHeadlinesLambdaFunction"
               },
-              "CodeSha256": "ElHa6Ns4/tWno9aXJauc8WAcJvy4g8+v7QEiEh11dvo="
+              "CodeSha256": "W/FajUPK5k9dSVerm689Ici1A2Sw2Tlx74iiunSMBVM="
             }
           },
           "BuildHeadlinesProvConcLambdaAlias": {
@@ -328,7 +328,7 @@
               },
               "FunctionVersion": {
                 "Fn::GetAtt": [
-                  "BuildHeadlinesLambdaVersionop1oRsPBpgnFf4UFuBp6cflT0uthdeaCvJ7QglXMA",
+                  "BuildHeadlinesLambdaVersionAhJ0q3rUuoe62EhOLHM5WkQp3VWTtosRCUihdYVza5M",
                   "Version"
                 ]
               },
@@ -598,7 +598,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1615508349407": {
+          "ApiGatewayDeployment1615544637768": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -815,7 +815,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/news-server/develop/1615508398883-2021-03-12T00:19:58.883Z/custom-resources.zip"
+                "S3Key": "serverless/news-server/develop/1615544679508-2021-03-12T10:24:39.508Z/custom-resources.zip"
               },
               "FunctionName": "news-server-develop-custom-resource-apigw-cw-role",
               "Handler": "apiGatewayCloudWatchRole/handler.handler",
@@ -898,13 +898,13 @@
           "GetHeadlinesLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetHeadlinesLambdaVersions6M0tXZp8LIPIKumYwoF7VKd4EnPi3iVlVURkBU"
+              "Ref": "GetHeadlinesLambdaVersionsCs5uFaEwcsXZf1EkeVBkaEUE40ax50XWydkuOWJ9w"
             }
           },
           "BuildHeadlinesLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "BuildHeadlinesLambdaVersionop1oRsPBpgnFf4UFuBp6cflT0uthdeaCvJ7QglXMA"
+              "Ref": "BuildHeadlinesLambdaVersionAhJ0q3rUuoe62EhOLHM5WkQp3VWTtosRCUihdYVza5M"
             }
           },
           "ServiceEndpoint": {
@@ -1075,7 +1075,7 @@
         "memory": 1024,
         "runtime": "nodejs10.x",
         "vpc": {},
-        "versionLogicalId": "GetHeadlinesLambdaVersions6M0tXZp8LIPIKumYwoF7VKd4EnPi3iVlVURkBU",
+        "versionLogicalId": "GetHeadlinesLambdaVersionsCs5uFaEwcsXZf1EkeVBkaEUE40ax50XWydkuOWJ9w",
         "targetAlias": {
           "name": "provisioned",
           "logicalId": "GetHeadlinesProvConcLambdaAlias"
@@ -1126,7 +1126,7 @@
         "memory": 1024,
         "runtime": "nodejs10.x",
         "vpc": {},
-        "versionLogicalId": "BuildHeadlinesLambdaVersionop1oRsPBpgnFf4UFuBp6cflT0uthdeaCvJ7QglXMA",
+        "versionLogicalId": "BuildHeadlinesLambdaVersionAhJ0q3rUuoe62EhOLHM5WkQp3VWTtosRCUihdYVza5M",
         "targetAlias": {
           "name": "provisioned",
           "logicalId": "BuildHeadlinesProvConcLambdaAlias"
@@ -1165,7 +1165,7 @@
     "orgUid": "LP1ktJ0FjSnF0SPvcQ"
   },
   "package": {
-    "artifactDirectoryName": "serverless/news-server/develop/1615508398883-2021-03-12T00:19:58.883Z",
+    "artifactDirectoryName": "serverless/news-server/develop/1615544679508-2021-03-12T10:24:39.508Z",
     "artifact": ""
   }
 }

@@ -58,7 +58,7 @@ function App() {
                 </div>
     <div class="row">
         <div class="text-center small-text">
-        <p>AI Generated Headlines - Liam Griffiths</p>
+        <p><a href="https://headlines-bucket.s3.eu-west-2.amazonaws.com/headlines.json">AI Generated Headlines</a> - <a href="https://liam-griffiths.co.uk">Liam Griffiths</a> - <a href="https://headlines-bucket.s3.eu-west-2.amazonaws.com/raw.json">Raw</a></p>
         </div>
     </div>
             </div>
