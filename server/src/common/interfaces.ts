@@ -15,6 +15,7 @@ export interface Headlines {
 export interface Headline {
     text: string;
     link: string;
+    topic: string;
 }
 
 export interface NewsAPIResponse {

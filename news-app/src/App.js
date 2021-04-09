@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Async from 'react-async';
 
 const loadHeadlines = () =>
-    fetch("https://w52orr4jkl.execute-api.eu-west-2.amazonaws.com/develop/headlines")
+    fetch("https://v4ay6eozmd.execute-api.eu-west-2.amazonaws.com/liam/headlines")
         .then(res => (res.ok ? res : Promise.reject(res)))
         .then(res => res.json())
 
@@ -58,7 +58,7 @@ function App() {
                 </div>
     <div class="row">
         <div class="text-center small-text">
-        <p><a href="https://headlines-bucket.s3.eu-west-2.amazonaws.com/headlines.json">AI Generated Headlines</a> - <a href="https://liam-griffiths.co.uk">Liam Griffiths</a> - <a href="https://headlines-bucket.s3.eu-west-2.amazonaws.com/raw.json">Raw</a></p>
+        <p><a href="https://headlines-bucket-dev.s3.eu-west-2.amazonaws.com/headlines.json">AI Generated Headlines</a> - <a href="https://liam-griffiths.co.uk">Liam Griffiths</a> - <a href="https://headlines-bucket-dev.s3.eu-west-2.amazonaws.com/raw.json">Raw</a></p>
         </div>
     </div>
             </div>
