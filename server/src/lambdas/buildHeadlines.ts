@@ -64,10 +64,10 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
                     if (topicList.length) {
                         topicList.sort();
                         //newHeadline.topics.push(topicList.join("-"));
-                        newHeadline.topics.push(`${topicList[0]}-${topicList[topicList.length - 1]}`);
-                        /*topicList.forEach((t) => {
+                        //newHeadline.topics.push(`${topicList[0]}-${topicList[topicList.length - 1]}`);
+                        topicList.forEach((t) => {
                             newHeadline.topics.push(t);
-                        })*/
+                        })
                         headlines.push(newHeadline);
                     }
                 }
@@ -103,7 +103,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     const generator = new TextGenerator(topicsHeadlines[0].headlines);
     const result = await generator.generateSentence({
         minWordCount: 5,
-        contextUsageDegree: 0.75
+        contextUsageDegree: 0.3
     });
 
     const finalHeadlines: Headlines = {
@@ -121,7 +121,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
             const generator1 = new TextGenerator(lineObj.headlines);
             const result1 = await generator1.generateSentence({
                 minWordCount: 5,
-                contextUsageDegree: 0.75
+                contextUsageDegree: 0.3
             });
             if (!finalHeadlines.headlines) finalHeadlines.headlines = [];
             if(result1) {
@@ -163,8 +163,9 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
 // @ts-ignore
 function urlContainsTopics(url, topicStr){
     let topicArray: string[] = topicStr.split("-");
+    let urlTest: string = url.replace(/\W/g, "");
     for (let i=0; i < topicArray.length; i++) {
-        if (url.toUpperCase().includes(topicArray[i].toUpperCase())) {
+        if (urlTest.toUpperCase().includes(topicArray[i].toUpperCase())) {
             return false;
         }
     }
