@@ -1,6 +1,6 @@
 # News Aggregator
 
-> Current Demo: https://liam-news-ai.netlify.app/
+> Current Demo: offline
 
 #### Project Intentions -
 
