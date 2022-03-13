@@ -6,7 +6,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     const s3: S3 = new AWS.S3();
 
     const options = {
-        Bucket: 'headlines-bucket',
+        Bucket: 'headlines-bucket-dev',
         Key: 'headlines.json',
     };
 

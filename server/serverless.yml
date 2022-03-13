@@ -63,7 +63,7 @@ functions:
                   method: get
                   path: build
             - schedule:
-                  rate: rate(60 minutes)
+                  rate: rate(30 minutes)
         provisionedConcurrency: 2
 
 resources:

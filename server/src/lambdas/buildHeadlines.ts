@@ -61,13 +61,13 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
                             topicList.push(t);
                         }
                     });
-                    if (topicList.length) {
-                        topicList.sort();
+                    if (topicList.length > 1) {
+                        //topicList.sort();
                         //newHeadline.topics.push(topicList.join("-"));
-                        //newHeadline.topics.push(`${topicList[0]}-${topicList[topicList.length - 1]}`);
-                        topicList.forEach((t) => {
-                            newHeadline.topics.push(t);
-                        })
+                        newHeadline.topics.push(`${topicList[0]}-${topicList[topicList.length - 1]}`);
+                        //topicList.forEach((t) => {
+                        //    newHeadline.topics.push(t);
+                        //})
                         headlines.push(newHeadline);
                     }
                 }
