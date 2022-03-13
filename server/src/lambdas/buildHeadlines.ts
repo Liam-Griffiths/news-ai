@@ -64,7 +64,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
                     if (topicList.length > 1) {
                         //topicList.sort();
                         //newHeadline.topics.push(topicList.join("-"));
-                        newHeadline.topics.push(`${topicList[0]}-${topicList[topicList.length - 1]}`);
+                        newHeadline.topics.push(`${topicList[0]}-${topicList[1]}`);
                         //topicList.forEach((t) => {
                         //    newHeadline.topics.push(t);
                         //})
