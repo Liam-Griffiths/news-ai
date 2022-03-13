@@ -138,7 +138,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     const s3: S3 = new AWS.S3();
 
     const options = {
-        Bucket: 'headlines-bucket',
+        Bucket: 'headlines-bucket-dev',
         Key: 'headlines.json',
         Body: JSON.stringify(finalHeadlines),
         ContentType: "application/json"
@@ -147,7 +147,7 @@ export const handler: Handler = async (event: APIGatewayEvent): Promise<APIGatew
     await s3.putObject(options).promise();
 
     const options2 = {
-        Bucket: 'headlines-bucket',
+        Bucket: 'headlines-bucket-dev',
         Key: 'raw.json',
         Body: JSON.stringify(topicsHeadlines),
         ContentType: "application/json"
