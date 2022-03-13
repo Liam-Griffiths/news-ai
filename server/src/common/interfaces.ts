@@ -36,7 +36,7 @@ export interface NewsAPIArticle {
 }
 
 export interface NewsAPISource {
-    id:   null | string;
+    id: null | string;
     name: string;
 }
 

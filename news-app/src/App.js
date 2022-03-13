@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Async from 'react-async';
 
 const loadHeadlines = () =>
-    fetch("https://v4ay6eozmd.execute-api.eu-west-2.amazonaws.com/liam/headlines")
+    fetch("https://v2f7341tl1.execute-api.eu-west-2.amazonaws.com/dev/headlines")
         .then(res => (res.ok ? res : Promise.reject(res)))
         .then(res => res.json())
 

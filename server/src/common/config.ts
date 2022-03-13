@@ -39,6 +39,7 @@ export const sources: SourceList = {
         { title:"Motley Fool", url:"https://www.fool.co.uk/feed/" },
         { title:"FT", url:"https://www.ft.com/?format=rss" },
         { title:"CryptoNews", url:"https://cryptonews.com/news/feed" },
+        { title:"4chan /pol/", url:"https://boards.4chan.org/pol/index.rss" },
         { title:"4chan /biz/", url:"https://boards.4channel.org/biz/index.rss" }
     ],
     breaking:[
