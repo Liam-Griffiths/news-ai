@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MobileBERT Headline Ranking</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+</head>
+<body>
+<script>
+    const MODEL_URL = 'mobilebert_headline_ranking_tfjs/model.json';
+    const TOKENIZER_URL = 'path/to/your/tokenizer.json';
+
+    let model, tokenizer;
+
+    async function loadModel() {
+        model = await tf.loadGraphModel(MODEL_URL);
+        const response = await fetch(TOKENIZER_URL);
+        tokenizer = await response.json();
+    }
+
+    async function rankHeadlines(headlinesWithAges) {
+        if (!model || !tokenizer) {
+            console.log('Model or tokenizer not loaded yet');
+            return;
+        }
+
+        // Tokenize input headlines and ages using tokenizer and create tensors
+        const inputs = headlinesWithAges.map(([headline, age]) => {
+            const tokens = tokenizer.encode(`${headline} [SEP] ${age} seconds ago`, { max_length: 128, padding: 'max_length', truncation: true });
+            const inputIds = tf.tensor1d(tokens, 'int32');
+            const attentionMask = tf.tensor1d(tokens.map(token => (token === 0 ? 0 : 1)), 'int32');
+            return { inputIds, attentionMask };
+        });
+
+        // Run the model
+        const logitsList = await Promise.all(inputs.map(input => {
+            const batchedInputIds = input.inputIds.expandDims(0);
+            const batchedAttentionMask = input.attentionMask.expandDims(0);
+            const logits = model.predict([batchedInputIds, batchedAttentionMask]);
+            return logits.data();
+        }));
+
+        // Extract scores from the logits
+        const scores = await Promise.all(logitsList.map(logits => logits[0]));
+
+        // Sort the headlines by score and return the sorted list
+        const sortedHeadlines = headlinesWithAges
+            .map((headlineWithAge, index) => ({ headlineWithAge, score: scores[index] }))
+            .sort((a, b) => b.score - a.score)
+            .map(({ headlineWithAge }) => headlineWithAge);
+
+        return sortedHeadlines;
+    }
+
+
+    loadModel().then(() => {
+        const headlinesWithAges = [
+            ['Major earthquake hits the city', 120],
+            ['Celebrity spotted at a local restaurant', 300],
+            ['New breakthrough in cancer research', 150],
+            ['Live: High-speed car chase on highway', 50],
+        ];
+
+        rankHeadlines(headlinesWithAges).then(sortedHeadlines => {
+            console.log('Sorted headlines:', sortedHeadlines);
+        });
+    });
+</script>
+</body>
+</html>
